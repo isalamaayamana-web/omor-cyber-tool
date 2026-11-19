@@ -6,6 +6,8 @@
 
     <application
         android:label="Omor Browser"
+        android:icon="@drawable/ic_omor_browser"
+        android:roundIcon="@drawable/ic_omor_browser"
         android:usesCleartextTraffic="false"
         android:allowBackup="false"
         android:theme="@android:style/Theme.Material.Light.NoActionBar"
