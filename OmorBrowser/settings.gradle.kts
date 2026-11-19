@@ -1,0 +1,9 @@
+pluginManagement {
+    repositories { google(); mavenCentral(); gradlePluginPortal() }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECTS)
+    repositories { google(); mavenCentral() }
+}
+rootProject.name = "OmorBrowser"
+include(":app")
