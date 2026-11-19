@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
         }
         address = EditText(this).apply {
             hint = "Search or enter website"
-            singleLine = true
+            setSingleLine(true)
             imeOptions = EditorInfo.IME_ACTION_GO
             layoutParams = LinearLayout.LayoutParams(0, dp(48), 1f)
         }
