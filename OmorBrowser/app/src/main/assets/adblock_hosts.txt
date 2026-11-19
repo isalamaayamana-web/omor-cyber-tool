@@ -1,0 +1,8 @@
+# Basic host blocklist; this is not a full adblock filter list.
+doubleclick.net
+googlesyndication.com
+adservice.google.com
+googleadservices.com
+adnxs.com
+taboola.com
+outbrain.com
