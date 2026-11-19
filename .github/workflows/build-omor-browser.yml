@@ -13,12 +13,13 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Configure Android SDK (runner preinstalled SDK)
+      - name: Configure Android SDK
         run: |
           echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> "$GITHUB_ENV"
           echo "ANDROID_SDK_ROOT=/usr/local/lib/android/sdk" >> "$GITHUB_ENV"
           echo "/usr/local/lib/android/sdk/cmdline-tools/latest/bin" >> "$GITHUB_PATH"
           echo "/usr/local/lib/android/sdk/platform-tools" >> "$GITHUB_PATH"
+          echo "/usr/local/lib/android/sdk/build-tools/35.0.0" >> "$GITHUB_PATH"
       - name: Accept Android SDK licenses
         run: yes | sdkmanager --licenses || true
       - name: Install Android SDK packages
@@ -29,9 +30,20 @@ jobs:
           gradle-version: '8.7'
       - name: Build debug APK
         working-directory: OmorBrowser
-        run: gradle assembleDebug
-      - name: Upload APK
+        run: gradle clean assembleDebug
+      - name: Verify APK integrity, alignment and signature
+        run: |
+          APK="OmorBrowser/app/build/outputs/apk/debug/app-debug.apk"
+          test -s "$APK"
+          zip -T "$APK"
+          apksigner verify --verbose --print-certs "$APK"
+          zipalign -c -v 4 "$APK"
+          aapt dump badging "$APK"
+      - name: Rename verified APK
+        run: cp OmorBrowser/app/build/outputs/apk/debug/app-debug.apk OmorBrowser.apk
+      - name: Upload verified APK
         uses: actions/upload-artifact@v4
         with:
-          name: OmorBrowser-debug-apk
-          path: OmorBrowser/app/build/outputs/apk/debug/app-debug.apk
+          name: OmorBrowser-verified-apk
+          path: OmorBrowser.apk
+          if-no-files-found: error
